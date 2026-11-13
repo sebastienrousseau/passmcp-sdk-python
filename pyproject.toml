@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passmcp-sdk"
+version = "0.0.10"
+description = "Apache-2.0 Python MCP client and server SDK with capability-gated 2026-07-28 conformance and offline passmcp attestation verification."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Sebastien Rousseau", email = "sebastian.rousseau@gmail.com" },
+]
+keywords = ["mcp", "model-context-protocol", "passmcp", "in-toto", "attestation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/sebastienrousseau/passmcp-sdk-python"
+Repository = "https://github.com/sebastienrousseau/passmcp-sdk-python"
+Documentation = "https://satellion.com/passmcp/docs/"
+Issues = "https://github.com/sebastienrousseau/passmcp-sdk-python/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+passmcp_sdk = ["py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "C90"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10

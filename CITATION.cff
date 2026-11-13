@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+cff-version: 1.2.0
+title: "passmcp-sdk-python: Apache-2.0 Python MCP client and server SDK with offline passmcp attestation verification"
+message: "If you use this software, please cite it using these metadata."
+type: software
+authors:
+  - family-names: Rousseau
+    given-names: Sebastien
+    email: sebastian.rousseau@gmail.com
+version: 0.0.10
+date-released: 2026-11-12
+repository-code: "https://github.com/sebastienrousseau/passmcp-sdk-python"
+abstract: >-
+  Apache-2.0 Model Context Protocol client and server SDK for Python covering
+  revisions 2025-06-18 through 2026-07-28 (stdio and Streamable HTTP, OAuth 2.1
+  with PKCE, SEP-2164 unknown-resource errors, SEP-2549 cache hints, stateless
+  server/discover, and read-only client execution defaults) paired with an
+  offline verifier for passmcp in-toto evaluation attestations.
+keywords:
+  - model-context-protocol
+  - mcp
+  - attestation
+  - in-toto
+  - python
+license: Apache-2.0

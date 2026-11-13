@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - "feat/v*"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install verification tools
+        run: python -m pip install --upgrade pip pytest ruff reuse
+
+      - name: Lint
+        run: make lint
+
+      - name: REUSE compliance
+        run: make reuse
+
+      - name: Unit and conformance tests
+        run: make test
+
+      - name: Runnable example
+        run: make example
+
+      - name: Family manifest check
+        if: matrix.python-version == '3.12'
+        run: make family
+
+      - name: Lockstep version check
+        if: matrix.python-version == '3.12'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make lockstep
