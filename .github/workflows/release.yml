@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  release:
+    name: Publish release notes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          show-progress: false
+
+      - name: Resolve and verify the release
+        id: ver
+        run: |
+          set -euo pipefail
+          if [ "${DRY_RUN}" = "true" ]; then
+            tag="v$(grep -Eo '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' CHANGELOG.md | head -1 | tr -d '#[] ')"
+          else
+            tag="${GITHUB_REF_NAME}"
+            git merge-base --is-ancestor "${GITHUB_SHA}" origin/main
+            test "$(git rev-list -n 1 "${tag}")" = "${GITHUB_SHA}"
+          fi
+          scripts/verify-release-versions.sh "${tag}"
+          echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+
+      - name: Compose the notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.ver.outputs.tag }}
+        run: |
+          set -euo pipefail
+          ver="${TAG#v}"
+          sum=$(git archive --prefix="passmcp-sdk-python-${ver}/" "${GITHUB_SHA}" | gzip -n | sha256sum | cut -d' ' -f1)
+          target=()
+          [ "${DRY_RUN}" = "true" ] && target=(-f target_commitish="${GITHUB_SHA}")
+          gh api "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+            -f tag_name="${TAG}" "${target[@]}" --jq .body > "${RUNNER_TEMP}/generated.md"
+          {
+            sed '1,/^$/{/^<!--/d;/^$/d;}' "docs/releases/${TAG}.md"
+            echo
+            grep -v '^\*\*Full Changelog\*\*' "${RUNNER_TEMP}/generated.md"
+            echo
+            echo "## Checksums"
+            echo
+            echo "SHA-256 of \`git archive --prefix=passmcp-sdk-python-${ver}/ ${TAG} | gzip -n\`:"
+            echo
+            echo "\`\`\`text"
+            echo "${sum}  passmcp-sdk-python-${ver}.tar.gz"
+            echo "\`\`\`"
+            echo
+            grep '^\*\*Full Changelog\*\*' "${RUNNER_TEMP}/generated.md" || true
+          } > notes.md
+          cat notes.md
+
+      - name: Publish
+        if: env.DRY_RUN != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.ver.outputs.tag }}
+        run: gh release create "${TAG}" --title "passmcp-sdk-python ${TAG#v}" --notes-file notes.md --verify-tag

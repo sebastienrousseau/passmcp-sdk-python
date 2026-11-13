@@ -14,7 +14,6 @@
   <a href="https://github.com/sebastienrousseau/passmcp-sdk-python"><img src="https://img.shields.io/badge/python-3.11%2B-3776AB?style=for-the-badge" alt="Python 3.11+" /></a>
 </p>
 
-> **Status: Unreleased (`feat/v0.0.10`).** Registered in the `passmcp` family manifest ([ADR 0013](https://github.com/sebastienrousseau/passmcp/blob/main/docs/adr/0013-language-sdks-are-apache-satellites.md)) and joining the lockstep release stream at `v0.0.10`.
 
 ## Contents
 
@@ -38,8 +37,6 @@
 ---
 
 ## Install
-
-Once `v0.0.10` is tagged:
 
 ```sh
 pip install passmcp-sdk==0.0.10
@@ -78,7 +75,7 @@ print(srv.name, st.score_grade)
 
 ## The passmcp-sdk-python ecosystem
 
-Every component is released at **0.0.9** and moves in lockstep: one version across the family, released together ([docs/ecosystem.md](https://github.com/sebastienrousseau/passmcp/blob/main/docs/ecosystem.md)).
+Every component is released at **0.0.10** and moves in lockstep: one version across the family, released together ([docs/ecosystem.md](https://github.com/sebastienrousseau/passmcp/blob/main/docs/ecosystem.md)).
 
 | Component | Purpose | Use case |
 | :--- | :--- | :--- |
@@ -104,12 +101,12 @@ Every component is released at **0.0.9** and moves in lockstep: one version acro
 
 | Area | Capability | Status |
 | :--- | :--- | :--- |
-| Transports | Line-delimited `stdio` (`serve_stdio`, `StdioTransport`) and Streamable HTTP (`StreamableHttpHandler`, WSGI/`BaseHTTPRequestHandler`, `HttpClientTransport`) | On `feat/v0.0.10` |
-| Protocol | JSON-RPC 2.0 `initialize`, `ping`, stateless `server/discover`, and `2026-07-28` mirrored header validation (`-32020`) | On `feat/v0.0.10` |
-| Capability & schema gating | Derived `capabilities`, JSON Schema `inputSchema` validation (`-32602`), `structuredContent`, and `-32601` for undeclared RPCs | On `feat/v0.0.10` |
-| SEP-2164 & SEP-2549 | Missing `resources/read` returns `-32602` + `error.data.uri` (`2026-07-28`); list responses validate & emit `ttlMs` / `cacheScope` | On `feat/v0.0.10` |
-| Auth, Origin & safety | OAuth 2.1 S256 PKCE, RFC 9728 / RFC 8414 metadata validation, `OriginGuard`, and `readOnlyHint: true` default client policy | On `feat/v0.0.10` |
-| Attestation | Offline `in-toto` `Statement/v1` (`mcp-evaluation/v1`) SHA-256 / SHA-512 target-descriptor verifier | On `feat/v0.0.10` |
+| Transports | Line-delimited `stdio` (`serve_stdio`, `StdioTransport`) and Streamable HTTP (`StreamableHttpHandler`, WSGI/`BaseHTTPRequestHandler`, `HttpClientTransport`) | Released in `0.0.10` |
+| Protocol | JSON-RPC 2.0 `initialize`, `ping`, stateless `server/discover`, and `2026-07-28` mirrored header validation (`-32020`) | Released in `0.0.10` |
+| Capability & schema gating | Derived `capabilities`, JSON Schema `inputSchema` validation (`-32602`), `structuredContent`, and `-32601` for undeclared RPCs | Released in `0.0.10` |
+| SEP-2164 & SEP-2549 | Missing `resources/read` returns `-32602` + `error.data.uri` (`2026-07-28`); list responses validate & emit `ttlMs` / `cacheScope` | Released in `0.0.10` |
+| Auth, Origin & safety | OAuth 2.1 S256 PKCE, RFC 9728 / RFC 8414 metadata validation, `OriginGuard`, and `readOnlyHint: true` default client policy | Released in `0.0.10` |
+| Attestation | Offline `in-toto` `Statement/v1` (`mcp-evaluation/v1`) SHA-256 / SHA-512 target-descriptor verifier | Released in `0.0.10` |
 
 ---
 

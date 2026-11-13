@@ -10,7 +10,7 @@ authors:
     given-names: Sebastien
     email: sebastian.rousseau@gmail.com
 version: 0.0.10
-date-released: 2026-11-12
+date-released: 2026-11-13
 repository-code: "https://github.com/sebastienrousseau/passmcp-sdk-python"
 abstract: >-
   Apache-2.0 Model Context Protocol client and server SDK for Python covering
