@@ -10,11 +10,6 @@ manifest="${PASSMCP_ECOSYSTEM_URL:-https://raw.githubusercontent.com/sebastienro
 mf=$(mktemp)
 trap 'rm -f "$mf"' EXIT
 curl -fsSL "$manifest" -o "$mf"
-if [ -z "${PASSMCP_ECOSYSTEM_URL:-}" ] && ! grep -Eq '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' CHANGELOG.md; then
-  if ! python3 -c 'import json,sys; sys.exit(0 if any(r["name"]=="passmcp-sdk-python" for r in json.load(open(sys.argv[1]))["repositories"]) else 1)' "$mf"; then
-    curl -fsSL "https://raw.githubusercontent.com/sebastienrousseau/passmcp/feat/v0.0.10/ecosystem.json" -o "$mf"
-  fi
-fi
 row=$(python3 - "$mf" <<'PYEOF'
 import json, sys
 m = json.load(open(sys.argv[1]))

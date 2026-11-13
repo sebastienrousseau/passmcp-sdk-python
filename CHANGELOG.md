@@ -14,6 +14,8 @@ release stream with its first signed tag.
 
 ## [Unreleased]
 
+## [0.0.10] - 2026-11-13
+
 ### Added
 
 - **Initial Python MCP client and server core (`passmcp-sdk`)** covering MCP
